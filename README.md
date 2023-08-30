@@ -12,13 +12,13 @@ The key difference in this workflow is the "Edit" button on the posted message.
 When the same end-user clicks the button, the workflow opens a modal view that
 allows the user to modify or delete the message.
 
-<img src="https://user-images.githubusercontent.com/19658/264236932-dd142d0d-5297-4ae9-b171-d9addfac15ce.gif" width=500>
+<img src="https://user-images.githubusercontent.com/19658/264497770-4ad8ebbb-eede-448f-8610-3cfdc9ce0736.gif" width=500>
 
 On the other hand, when a different user in the same channel clicks the "Edit"
 button, the workflow states that the user does not have permission to
 edit/delete the message as they are not the author of it.
 
-<img src="https://user-images.githubusercontent.com/19658/264237277-76eef8af-9c61-44f7-bc14-ebe76d7b9d65.gif" width=500>
+<img src="https://user-images.githubusercontent.com/19658/264498044-2acf7b53-78e5-4866-b071-570933897580.gif" width=500>
 
 Please note that, as of September 2023, there is no way to achieve the same goal
 without writing a custom function (meaning a custom step in the Workflow Builder

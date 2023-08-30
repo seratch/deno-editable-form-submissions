@@ -2,6 +2,13 @@ import { DefineFunction, Schema } from "deno-slack-sdk/mod.ts";
 import { SlackFunction } from "deno-slack-sdk/mod.ts";
 import { Env } from "deno-slack-sdk/types.ts";
 
+// Using a 3rd party Slack API client for even better typing and debug logging
+import {
+  AnySendableMessageBlock,
+  MessageMetadata,
+  SlackAPIClient,
+} from "slack-web-api-client/mod.ts";
+
 export const def = DefineFunction({
   callback_id: "post_request_message",
   title: "Post a request to channel",
@@ -20,12 +27,6 @@ export const def = DefineFunction({
     required: [],
   },
 });
-
-import {
-  AnySendableMessageBlock,
-  MessageMetadata,
-  SlackAPIClient,
-} from "slack-web-api-client/mod.ts";
 
 export default SlackFunction(
   def,
@@ -89,7 +90,7 @@ export default SlackFunction(
         view: {
           "type": "modal",
           "callback_id": "edit-message",
-          "title": { "type": "plain_text", "text": "Permissoion Denied" },
+          "title": { "type": "plain_text", "text": "Permission denied" },
           "close": { "type": "plain_text", "text": "Close" },
           "blocks": [
             {
@@ -97,7 +98,7 @@ export default SlackFunction(
               "text": {
                 "type": "mrkdwn",
                 "text":
-                  ":warning: Sorry! Only the person who submitted this request has the ability to edit or delete this posted message.",
+                  ":warning: Sorry! Only the person who submitted this request has the ability to edit or delete the posted message.",
               },
             },
           ],
@@ -115,9 +116,9 @@ export default SlackFunction(
       view: {
         "type": "modal",
         "callback_id": "edit-message",
-        "title": { "type": "plain_text", "text": "Edit message" },
-        "submit": { "type": "plain_text", "text": "Submit" },
-        "close": { "type": "plain_text", "text": "Cancel" },
+        "title": { "type": "plain_text", "text": "Edit/delete message" },
+        "submit": { "type": "plain_text", "text": "Save" },
+        "close": { "type": "plain_text", "text": "Close" },
         "private_metadata": JSON.stringify({
           channel: inputs.channel,
           ts: body.message.ts,
@@ -174,8 +175,8 @@ export default SlackFunction(
         view: {
           "type": "modal",
           "callback_id": "message-deleted",
-          "title": { "type": "plain_text", "text": "Edit message" },
-          "close": { "type": "plain_text", "text": "Cancel" },
+          "title": { "type": "plain_text", "text": "Message deleted" },
+          "close": { "type": "plain_text", "text": "Close" },
           "blocks": [
             {
               "type": "section",
@@ -209,6 +210,9 @@ export default SlackFunction(
     const error = `Failed to modify a message (error: ${modification.error})`;
     return { error };
   }
+  // This worklow may receive more button click requests even after this modification.
+  // Therefore, you don't need to call functions.completeSuccess API here.
+
   return {}; // Close this modal view
 });
 
