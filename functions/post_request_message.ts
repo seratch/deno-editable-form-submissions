@@ -4,7 +4,7 @@ import { Env } from "deno-slack-sdk/types.ts";
 
 // Using a 3rd party Slack API client for even better typing and debug logging
 import {
-  AnySendableMessageBlock,
+  AnyMessageBlock,
   MessageMetadata,
   SlackAPIClient,
 } from "slack-web-api-client/mod.ts";
@@ -232,7 +232,7 @@ function buildMessage(
   submitterId: string,
 ): {
   text: string;
-  blocks: AnySendableMessageBlock[];
+  blocks: AnyMessageBlock[];
   metadata: MessageMetadata;
 } {
   return {
